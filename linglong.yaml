@@ -1,0 +1,39 @@
+package:
+  id: libdv
+  name: libdv
+  version: 1.0.0
+  kind: lib
+  discription: |
+    libdv
+
+base:
+  id: org.deepin.base
+  version: 20.5.0
+
+source:
+  kind: git
+  url: https://github.com/deepin-community/libdv.git
+  version: uos
+  commit: 7299046d62ad290cd01902f46386dd3b106238d0
+
+  patch:
+  - 0001-configure_gtk2.patch
+  - 0002-hurd_ftbfs_fix.patch
+  - 0003-zap_config_h.patch
+  - 0004-move_config_h_to_apps.patch
+  - 0005-no_as_needed.patch
+  - 0006-misspellings.patch
+  - 0007-manpages.patch
+  - 1001-yuv_420_use_yv12_wrong_encoding.patch
+build:
+  kind: manual
+  manual:
+    configure: |
+      #exec bash
+      mkdir build
+      cd build
+      cmake -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+            -DCMAKE_INSTALL_LIBDIR=${PREFIX}/lib \
+            -DKCONFIG_COMPILER_INSTALL_DIR="lib/libexec/kf5" ..
+      make -j
+      make -j install
